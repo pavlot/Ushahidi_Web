@@ -23,6 +23,7 @@ var zoom = <?php echo Kohana::config('settings.default_zoom'); ?>;
 
 jQuery(function($) {
 	$(window).load(function(){
+
 		<?php echo map::layers_js(FALSE); ?>
 		var mapConfig = {
 
@@ -43,9 +44,16 @@ jQuery(function($) {
 		
 		var markers = new OpenLayers.Layer.Markers( "Markers" );
 
+		window.osrmClient = new OSRM_Client.OSRM_Client(
+			{
+				ushahidiMap:map,
+				mapMarkersLayer:markers,
+				pointsContainer:"viapoint-list"
+			}
+		);
+		
 		map._olMap.events.register("click", map._olMap , function(e){
-		var point = map._olMap.getLonLatFromViewPortPx(e.xy);
-		markers.addMarker(new OpenLayers.Marker(point));
+			osrmClient.addViapointAtXY(e.xy);
 		});
 
 		map._olMap.addLayer(markers);

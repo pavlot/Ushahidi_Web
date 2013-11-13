@@ -16,6 +16,10 @@ class osrmclient {
 	
 	public function add_requirements()
 	{
+		Requirements::js('media/js/OpenLayers.js');
+		Requirements::js('plugins/osrmclient/config.js');
+		Requirements::js('plugins/osrmclient/views/js/EncodedPolyline.js');
+		Requirements::js('plugins/osrmclient/views/js/osrm_routing.js');
 		Requirements::css('plugins/osrmclient/views/css/osrmclient_style.css');
 	}
 	
