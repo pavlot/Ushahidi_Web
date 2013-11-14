@@ -94,8 +94,13 @@ OSRM_Client.OSRM_Client = function(clientParams)
 		uiListItemAnchor.href = "#"
 		
 		var uiListItemNameSpan = document.createElement("span");
-		uiListItemNameSpan.innerHTML = "lat:" + viapoint.getCoords().lat + "<br/>lon:" +
-		viapoint.getCoords().lon;
+		uiListItemNameSpan.innerHTML = "lat:" + 
+			parseFloat(viapoint.getCoords().lat).toFixed(
+				OSRM_Client.CONST.LATLON_PRECISION
+			) + ", lon:" +
+			parseFloat(viapoint.getCoords().lon).toFixed(
+				OSRM_Client.CONST.LATLON_PRECISION
+			);
 		
 		uiListItemAnchor.appendChild(uiListItemNameSpan);
 		viapoint.uiListItem.appendChild(uiListItemAnchor);
