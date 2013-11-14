@@ -8,16 +8,68 @@ OSRM_Client.nearestPoint = function()
 		this.get*/
 	};
 };
+
+/**
+ * requestUrl must be finished with jsonp=
+ * */
+OSRM_Client.JSONP_Callback = function(callbackId, callback, requestUrl)
+{
+	this.callbackId = callbackId;
+	this.callback = callback;
+	this.jsonpScript = document.createElement("script");
+	this.jsonpScript.type = 'text/javascript';
+	this.jsonpScript.src = requestUrl + "window.osrmClient.callbacks.callbackArray."
+		+ callbackId + ".callback";
+};
+
+OSRM_Client.JSONP_CallbackHolder = function()
+{
+	this.callbackArray = {};
+	this.addCallback = function(callbackObj)
+	{
+		this.removeCallback(callbackObj);
+		document.head.appendChild(callbackObj.jsonpScript); 
+		this.callbackArray[callbackObj.callbackId] = callbackObj;
+	};
+	
+	this.removeCallback = function(callbackObjId)
+	{
+		if(this.callbackArray[callbackObjId]
+			&& this.callbackArray[callbackObjId].jsonpScript.parentNode
+		){
+			this.callbackArray[callbackObjId].jsonpScript.parentNode.removeChild(
+				this.callbackArray[callbackObjId].jsonpScript
+			);
+		}
+		delete this.callbackArray[callbackObjId];
+	};
+};
+
 OSRM_Client.Viapoint = function(viapointData)
 {
+	this.id = "viapoint_" + new Date().getTime();
 	this.latlon = viapointData.latlon;
 	this.marker = viapointData.marker;
 	this.name = viapointData.name;
+	this.uiListItem = null;
 	
 	/** Return coordinates transformed to correct system. */
 	this.getCoords = function()
 	{
 		return this.latlon.clone().transform(Ushahidi.proj_900913, Ushahidi.proj_4326);
+	}
+	
+	this.setName = function(name)
+	{
+		this.name = name;
+		var uiListItemNameSpan = document.createElement("span");
+		uiListItemNameSpan.innerHTML = "" + this.name;
+		if(this.uiListItem.firstChild) {
+			this.uiListItem.insertBefore(uiListItemNameSpan,this.uiListItem.firstChild);
+		} else {
+			this.uiListItem.appendChild(uiListItemNameSpan);
+		}
+		
 	}
 }
 
@@ -28,8 +80,8 @@ OSRM_Client.OSRM_Client = function(clientParams)
 	this.route_layer = null;
 	this.pointsContainer = clientParams.pointsContainer;
 	this.pointsContainerObj = document.getElementById(this.pointsContainer);
-
-	this._nearestVaypointScript = null;
+	this.callbacks = new OSRM_Client.JSONP_CallbackHolder();
+	
 	this._viapoints = {};
 	
 	/** Create viapoint and marker for it. */
@@ -41,7 +93,7 @@ OSRM_Client.OSRM_Client = function(clientParams)
 			}
 		);
 		this.addViapoint(viapoint);
-		//this.getNearestPoint(viapoint); // TODO Make reverse geocoding for new added point.
+		this.getNearestPoint(viapoint); // TODO Make reverse geocoding for new added point.
 	};
 	
 	this.addViapoint = function(viapoint)
@@ -110,7 +162,7 @@ OSRM_Client.OSRM_Client = function(clientParams)
 	
 	this.processVaypointNearestResponse = function(response, parameters)
 	{
-		alert(JSON.stringify(response));
+		//alert(JSON.stringify(response));
 	};
 	
 	this.processRoute = function(response, parameters)
@@ -135,20 +187,38 @@ OSRM_Client.OSRM_Client = function(clientParams)
 	
 	this.getNearestPoint = function(viapoint)
 	{
+		var osrmClientObj = this;
 		var requestUrl = OSRM_Client.GLOBALS.OSRM_URL+
 				"/" + OSRM_Client.CONST.NEAREST;
 		var coordinates = viapoint.getCoords();
 		requestUrl += "?loc="+coordinates.lat;
 		requestUrl += ","+coordinates.lon;
-		requestUrl += "&jsonp=window.osrmClient.processVaypointNearestResponse";
-		if(this._nearestVaypointScript)
+		requestUrl += "&jsonp=";
+		
+		
+		//callbackId, callback, requestUrl
+		var callbackId = viapoint.id;
+		var callback = function(pointInfoObj)
+		{
+			viapoint.setName(pointInfoObj.name);
+			osrmClientObj.callbacks.removeCallback(callbackId);
+		};
+		var callbackObject = new OSRM_Client.JSONP_Callback(
+			callbackId,
+			callback,
+			requestUrl
+		);
+		this.callbacks.addCallback(callbackObject);
+/*		if(this._nearestVaypointScript)
 		{
 			this._nearestVaypointScript.remove();
 		}
+		
 		this._nearestVaypointScript = document.createElement("script");
 		this._nearestVaypointScript.type = 'text/javascript';
 		this._nearestVaypointScript.src = requestUrl;
-		document.head.appendChild(this._nearestVaypointScript);
+		
+		document.head.appendChild(this._nearestVaypointScript);*/
 	};
 	
 	this.getRouteForViapoints = function(viapoints)
