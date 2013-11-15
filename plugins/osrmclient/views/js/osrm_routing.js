@@ -188,37 +188,26 @@ OSRM_Client.OSRM_Client = function(clientParams)
 	this.getNearestPoint = function(viapoint)
 	{
 		var osrmClientObj = this;
-		var requestUrl = OSRM_Client.GLOBALS.OSRM_URL+
-				"/" + OSRM_Client.CONST.NEAREST;
 		var coordinates = viapoint.getCoords();
-		requestUrl += "?loc="+coordinates.lat;
-		requestUrl += ","+coordinates.lon;
-		requestUrl += "&jsonp=";
 		
+		var reverseProvider = new OSRMClientReverse.MapquestProvider(
+				coordinates.lat, 
+				coordinates.lon);
 		
 		//callbackId, callback, requestUrl
 		var callbackId = viapoint.id;
 		var callback = function(pointInfoObj)
 		{
-			viapoint.setName(pointInfoObj.name);
+			var result = reverseProvider.parseResult(pointInfoObj);
+			viapoint.setName(result.displayName);
 			osrmClientObj.callbacks.removeCallback(callbackId);
 		};
 		var callbackObject = new OSRM_Client.JSONP_Callback(
 			callbackId,
 			callback,
-			requestUrl
+			reverseProvider.getReverseQuery()
 		);
 		this.callbacks.addCallback(callbackObject);
-/*		if(this._nearestVaypointScript)
-		{
-			this._nearestVaypointScript.remove();
-		}
-		
-		this._nearestVaypointScript = document.createElement("script");
-		this._nearestVaypointScript.type = 'text/javascript';
-		this._nearestVaypointScript.src = requestUrl;
-		
-		document.head.appendChild(this._nearestVaypointScript);*/
 	};
 	
 	this.getRouteForViapoints = function(viapoints)
