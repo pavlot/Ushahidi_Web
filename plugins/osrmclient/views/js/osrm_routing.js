@@ -1,14 +1,3 @@
-OSRM_Client.nearestPoint = function()
-{
-	this.getNearestPoint = function(marker, callback)
-	{
-		alert("getNearestPoint executed.");
-		/*var requestUrl = OSRM_Client.GLOBALS.OSRM_URL+
-				"/" + OSRM_Client.CONST.NEAREST;
-		this.get*/
-	};
-};
-
 /**
  * requestUrl must be finished with jsonp=
  * */
@@ -141,6 +130,7 @@ OSRM_Client.OSRM_Client = function(clientParams)
 	/** Add viapoint to list of the viaponts. */
 	this.addViapoint2Container = function(viapoint)
 	{
+		var thisOsrmClient = this;
 		viapoint.uiListItem = document.createElement("li");
 		var uiListItemAnchor = document.createElement("a");
 		uiListItemAnchor.href = "#"
@@ -153,6 +143,11 @@ OSRM_Client.OSRM_Client = function(clientParams)
 			parseFloat(viapoint.getCoords().lon).toFixed(
 				OSRM_Client.CONST.LATLON_PRECISION
 			);
+		
+		uiListItemNameSpan.onclick = function()
+		{
+			thisOsrmClient.ushahidiMap._olMap.setCenter(viapoint.latlon);
+		};
 		
 		uiListItemAnchor.appendChild(uiListItemNameSpan);
 		viapoint.uiListItem.appendChild(uiListItemAnchor);
