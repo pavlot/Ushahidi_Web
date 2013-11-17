@@ -51,14 +51,7 @@ OSRM_Client.Viapoint = function(viapointData)
 	this.setName = function(name)
 	{
 		this.name = name;
-		var uiListItemNameSpan = document.createElement("span");
-		uiListItemNameSpan.innerHTML = "" + this.name;
-		if(this.uiListItem.firstChild) {
-			this.uiListItem.insertBefore(uiListItemNameSpan,this.uiListItem.firstChild);
-		} else {
-			this.uiListItem.appendChild(uiListItemNameSpan);
-		}
-		
+		this.divName.innerHTML = name;
 	}
 }
 
@@ -72,6 +65,7 @@ OSRM_Client.OSRM_Client = function(clientParams)
 	this.callbacks = new OSRM_Client.JSONP_CallbackHolder();
 	
 	this._viapoints = {};
+	this._viapointsOrder = []; // Container, which holds id's of viaponts ordered against route (re-ordered by list)
 	
 	/** Create viapoint and marker for it. */
 	this.addViapointAtXY = function(xy){
@@ -92,6 +86,7 @@ OSRM_Client.OSRM_Client = function(clientParams)
 			this.mapMarkersLayer.addMarker(viapoint.marker);
 			this.addViapoint2Container(viapoint);
 			this._viapoints[str_latlon] = viapoint;
+			this._viapointsOrder.push(str_latlon);
 			if(Object.keys(this._viapoints).length > 1)
 			{
 				this.getRouteForViapoints(this._viapoints);
@@ -106,7 +101,7 @@ OSRM_Client.OSRM_Client = function(clientParams)
 			this.mapMarkersLayer.removeMarker(viapoint.marker);
 			viapoint.uiListItem.parentNode.removeChild(viapoint.uiListItem);
 			delete this._viapoints[str_latlon];
-
+			this._viapointsOrder.splice(str_latlon);
 			if(updateRoute==true && Object.keys(this._viapoints).length > 1)
 			{
 				this.getRouteForViapoints(this._viapoints);
@@ -132,33 +127,37 @@ OSRM_Client.OSRM_Client = function(clientParams)
 	{
 		var thisOsrmClient = this;
 		viapoint.uiListItem = document.createElement("li");
-		var uiListItemAnchor = document.createElement("a");
-		uiListItemAnchor.href = "#"
+		viapoint.markerImg = document.createElement("img");
+		viapoint.markerImg.src = "plugins/osrmclient/media/img/marker.png";
+		viapoint.markerImg.className += "viapoint-marker";
 		
-		var uiListItemNameSpan = document.createElement("span");
-		uiListItemNameSpan.innerHTML = "lat:" + 
+		viapoint.uiListItem.appendChild(viapoint.markerImg);
+		var divContainer = document.createElement("div");
+		divContainer.className += "viapoint-info";
+		viapoint.uiListItem.appendChild(divContainer);
+		
+		viapoint.divName = document.createElement("div");
+		viapoint.setName("Resolving..."); // ToDo make this constant
+		divContainer.appendChild(viapoint.divName);
+		
+		viapoint.divLatLon = document.createElement("div");
+		viapoint.divLatLon.innerHTML = "lat:" + 
 			parseFloat(viapoint.getCoords().lat).toFixed(
 				OSRM_Client.CONST.LATLON_PRECISION
 			) + ", lon:" +
 			parseFloat(viapoint.getCoords().lon).toFixed(
 				OSRM_Client.CONST.LATLON_PRECISION
 			);
+		viapoint.divLatLon.className += "coordinates";
+		divContainer.appendChild(viapoint.divLatLon);
 		
-		uiListItemNameSpan.onclick = function()
+		viapoint.uiListItem.onclick = function()
 		{
 			thisOsrmClient.ushahidiMap._olMap.setCenter(viapoint.latlon);
 		};
-		
-		uiListItemAnchor.appendChild(uiListItemNameSpan);
-		viapoint.uiListItem.appendChild(uiListItemAnchor);
-		
+				
 		this.pointsContainerObj.appendChild(viapoint.uiListItem);
 	}
-	
-	this.processVaypointNearestResponse = function(response, parameters)
-	{
-		//alert(JSON.stringify(response));
-	};
 	
 	this.processRoute = function(response, parameters)
 	{

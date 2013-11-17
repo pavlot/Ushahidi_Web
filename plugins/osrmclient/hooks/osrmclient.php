@@ -18,6 +18,7 @@ class osrmclient {
 	{
 		Requirements::js('media/js/OpenLayers.js');
 		Requirements::js('plugins/osrmclient/config.js');
+		Requirements::js('plugins/osrmclient/views/js/jquery.sortable.js');
 		Requirements::js('plugins/osrmclient/views/js/EncodedPolyline.js');
 		Requirements::js('plugins/osrmclient/views/js/reverse_providers.js');
 		Requirements::js('plugins/osrmclient/views/js/osrm_routing.js');
