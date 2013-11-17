@@ -20,8 +20,17 @@
 /* Filter List */
 ul.osrmclient_viapoints { list-style-type:none; position:relative; }
 ul.osrmclient_viapoints ul { list-style-type:none; padding:0 0 0 10px; }
-ul.osrmclient_viapoints li { display:block; position:relative; overflow:auto; padding:3px 0 3px 2px; margin-bottom:3px; clear:both;margin-top:10px;}
-ul.osrmclient_viapoints li div.viapoint {cursor: pointer;}
-ul.osrmclient_viapoints li div.viapoint-info {float:left; margin-left:10px; width:75%;}
+ul.osrmclient_viapoints li { 
+	display:block; 
+	position:relative; 
+	overflow:auto; 
+	padding:3px 0 3px 2px; 
+	margin-bottom:3px; 
+	clear:both; 
+	margin-top:10px;
+	cursor: pointer;
+}
+ul.osrmclient_viapoints li div.viapoint-info {float:left; margin-left:10px; width:70%;}
 ul.osrmclient_viapoints li img.viapoint-marker {float:left;}
+ul.osrmclient_viapoints li img.viapoint-manage {float:left; margin-left:2px;margin-bottom:2px;}
 ul.osrmclient_viapoints li div.coordinates {color:#636363;}

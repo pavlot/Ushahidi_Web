@@ -7,7 +7,7 @@ OSRM_Client = {
 	CONST : {
 		NEAREST : "nearest",
 		VIAROUTE : "viaroute",
-		LATLON_PRECISION : 6
+		LATLON_PRECISION : 5
 	}
 };
  

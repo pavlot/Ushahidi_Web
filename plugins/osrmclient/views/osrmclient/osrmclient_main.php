@@ -28,16 +28,21 @@
 						<ul class="osrmclient_viapoints" id="viapoint-list">
 							<!-- Do not remove this code, it is here for debug purposes -->
 							<!--li>
-								<div class="viapoint">
+								<div>
 									<img src = "plugins/osrmclient/media/img/marker.png" class="viapoint-marker"></img>
 									<div class = "viapoint-info"> 
 										<div>Some viapoint1 address, wery long location. Wery long location name for few lines.</div>
 										<div class="coordinates"> lat:333.33333 lon: 333.33333</div>
 									</div>
+									<div>
+										<img src = "plugins/osrmclient/media/img/arrow_up.png" class="viapoint-manage"></img>
+										<img src = "plugins/osrmclient/media/img/cancel.png" class="viapoint-manage"></img>
+										<img src = "plugins/osrmclient/media/img/arrow_down.png" class="viapoint-manage"></img>
+									</div>
 								</div>
 							</li>
 							<li style="clear:both;margin-top:10px;">
-								<div class="viapoint">
+								<div>
 									<img src = "plugins/osrmclient/media/img/marker.png" class="viapoint-marker"></img>
 									<div class = "viapoint-info"> 
 										<div>Some viapoint2 address, wery long location. Wery long location name for few lines.</div>
@@ -46,28 +51,6 @@
 								</div>
 							</li-->
 						</ul>
-						<script>
-							function GetIndex(sender)
-								{   
-									var aElements = sender.parentNode.parentNode.getElementsByTagName("li");
-									var aElementsLength = aElements.length;
-
-									var index;
-									for (var i = 0; i < aElementsLength; i++)
-									{
-										if (aElements[i] == sender) //this condition is never true
-										{
-											index = i;
-											return index;
-										}
-									}
-								};
-							$('#viapoint-list').sortable( { forcePlaceholderSize: true }).bind('sortupdate', function(e, ui) {
-								//ui.item contains the current dragged element.
-								//Triggered when the user stopped sorting and the DOM position has changed.
-								alert(GetIndex(ui.item.context));
-							});
-						</script>
 					</div>
 				</div>
 			</div>
