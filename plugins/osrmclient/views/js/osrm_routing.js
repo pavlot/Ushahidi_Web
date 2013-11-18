@@ -298,7 +298,12 @@ OSRM_Client.OSRM_Client = function(clientParams)
 				nextViapoint.moveDownImg.style.display = 'block';
 				viapoint.moveUpImg.style.display = 'block';
 				viapoint.setMarkerIcon("plugins/osrmclient/media/img/marker.png");
-				nextViapoint.setMarkerIcon("plugins/osrmclient/media/img/marker-gold.png");
+				if(this._viapointsOrder.length > 2)
+				{
+					nextViapoint.setMarkerIcon("plugins/osrmclient/media/img/marker-gold.png");
+				}else{
+					nextViapoint.setMarkerIcon("plugins/osrmclient/media/img/marker-green.png");
+				}
 			}
 
 		}
