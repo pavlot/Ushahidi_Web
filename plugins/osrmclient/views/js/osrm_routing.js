@@ -132,6 +132,12 @@ OSRM_Client.OSRM_Client = function(clientParams)
 			if(updateRoute==true && Object.keys(this._viapoints).length > 1)
 			{
 				this.getRouteForViapoints();
+			} else{
+				if(this.route_layer)
+				{
+					this.ushahidiMap._olMap.removeLayer(this.route_layer);
+					this.route_layer = null;
+				}
 			}
 		}
 	}
