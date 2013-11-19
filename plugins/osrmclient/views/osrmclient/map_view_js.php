@@ -49,7 +49,7 @@ jQuery(function($) {
 				ushahidiMap:map,
 				mapMarkersLayer:markers,
 				pointsContainer:"viapoint-list",
-				site_root:"<?php echo url::site() ?>"
+				site_root:"<?php echo url::file_loc("img") ?>"
 			}
 		);
 		
