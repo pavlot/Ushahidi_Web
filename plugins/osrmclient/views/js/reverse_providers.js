@@ -26,4 +26,3 @@ OSRMClientReverse.MapquestProvider = function(lat,lon)
 		return result;
 	};
 };
-
