@@ -164,11 +164,11 @@ OSRM_Client.OSRM_Client = function(clientParams)
 		viapoint.uiListItem.id = viapoint.id;
 		viapoint.markerImg = document.createElement("img");
 		viapoint.markerImg.className += "viapoint-marker";
-		this._viapoints[this._viapointsOrder[0]].setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker-green.png");
-		viapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker.png");
+		this._viapoints[this._viapointsOrder[0]].setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker-green.png");
+		viapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker.png");
 		if(this._viapointsOrder.length >= 3)
 		{
-			this._viapoints[this._viapointsOrder[this._viapointsOrder.length - 2]].setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker-gold.png");
+			this._viapoints[this._viapointsOrder[this._viapointsOrder.length - 2]].setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker-gold.png");
 		}
 		
 		viapoint.uiListItem.appendChild(viapoint.markerImg);
@@ -205,7 +205,7 @@ OSRM_Client.OSRM_Client = function(clientParams)
 		var thisOsrmClient = this;
 		var divManageContainer = document.createElement("div");
 		viapoint.moveUpImg = document.createElement("img");
-		viapoint.moveUpImg.src = this.site_root+"/plugins/osrmclient/media/img/arrow_up.png";
+		viapoint.moveUpImg.src = this.site_root+"plugins/osrmclient/media/img/arrow_up.png";
 		viapoint.moveUpImg.className += "viapoint-manage";
 		if(	this._viapointsOrder.length < 2)
 		{
@@ -221,7 +221,7 @@ OSRM_Client.OSRM_Client = function(clientParams)
 		divManageContainer.appendChild(viapoint.moveUpImg);
 
 		viapoint.cancelImg = document.createElement("img");
-		viapoint.cancelImg.src = this.site_root+"/plugins/osrmclient/media/img/cancel.png";
+		viapoint.cancelImg.src = this.site_root+"plugins/osrmclient/media/img/cancel.png";
 		viapoint.cancelImg.className += "viapoint-manage";
 		viapoint.cancelImg.onclick = function()
 		{
@@ -230,7 +230,7 @@ OSRM_Client.OSRM_Client = function(clientParams)
 		divManageContainer.appendChild(viapoint.cancelImg);
 
 		viapoint.moveDownImg = document.createElement("img");
-		viapoint.moveDownImg.src = this.site_root+"/plugins/osrmclient/media/img/arrow_down.png";
+		viapoint.moveDownImg.src = this.site_root+"plugins/osrmclient/media/img/arrow_down.png";
 		viapoint.moveDownImg.className += "viapoint-manage";
 		viapoint.moveDownImg.style.display = 'none';
 		viapoint.moveDownImg.onclick = function(){
@@ -258,18 +258,18 @@ OSRM_Client.OSRM_Client = function(clientParams)
 			{
 				viapoint.moveUpImg.style.display = 'none';
 				viapoint.moveDownImg.style.display = 'block';
-				viapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker-green.png");
+				viapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker-green.png");
 				prevViapoint.moveUpImg.style.display = 'block';
-				prevViapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker-gold.png");
+				prevViapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker-gold.png");
 			}
 			if(currentIndex + 1 == this._viapointsOrder.length){
 				prevViapoint.moveDownImg.style.display = 'none';
-				prevViapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker.png");
+				prevViapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker.png");
 				viapoint.moveDownImg.style.display = 'block';
 				if(this._viapointsOrder.length == 2){
-					viapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker-green.png");
+					viapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker-green.png");
 				}else{
-					viapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker-gold.png");
+					viapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker-gold.png");
 				}
 			}
 		}
@@ -292,12 +292,12 @@ OSRM_Client.OSRM_Client = function(clientParams)
 			{
 				viapoint.moveUpImg.style.display = 'block';
 				nextViapoint.moveUpImg.style.display = 'none';
-				nextViapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker-green.png");
+				nextViapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker-green.png");
 				if(this._viapointsOrder.length == 2)
 				{
-					viapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker.png");
+					viapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker.png");
 				}else{
-					viapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker-gold.png");
+					viapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker-gold.png");
 				}
 			}
 			if(currentIndex + 2 == this._viapointsOrder.length){
@@ -307,9 +307,9 @@ OSRM_Client.OSRM_Client = function(clientParams)
 				viapoint.setMarkerIcon("plugins/osrmclient/media/img/marker.png");
 				if(this._viapointsOrder.length > 2)
 				{
-					nextViapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker-gold.png");
+					nextViapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker-gold.png");
 				}else{
-					nextViapoint.setMarkerIcon(this.site_root+"/plugins/osrmclient/media/img/marker-green.png");
+					nextViapoint.setMarkerIcon(this.site_root+"plugins/osrmclient/media/img/marker-green.png");
 				}
 			}
 
