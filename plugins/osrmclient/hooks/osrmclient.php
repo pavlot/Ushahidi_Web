@@ -10,8 +10,8 @@ class osrmclient {
 	public function add()
 	{
 		Event::add('ushahidi_filter.view_pre_render.layout', array($this, 'add_requirements'));
-		
 		Event::add('ushahidi_filter.nav_main_tabs', array($this, 'osrmclient_show_nav'));
+		Event::add('ushahidi_action.report_form', array($this, 'add_route_to_report'));
 	}
 	
 	public function add_requirements()
@@ -32,6 +32,11 @@ class osrmclient {
 			'url' => url::site('osrmclient'),
 			'name' => 'OSRM');
 		array_push(Event::$data,$menu_items); 
+	}
+	
+	public function add_route_to_report()
+	{
+		View::factory('osrmclient/report_add_route_div')->render(TRUE);
 	}
 }
 

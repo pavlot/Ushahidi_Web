@@ -92,6 +92,7 @@ OSRM_Client.OSRM_Client = function(clientParams)
 	this._viapoints = {};
 	this._viapointsOrder = []; // Container, which holds id's of viaponts ordered against route (re-ordered by list)
 	
+	this.osrmRoute = {};
 
 	/** Create viapoint and marker for it. */
 	this.addViapointAtXY = function(xy){
@@ -347,7 +348,9 @@ OSRM_Client.OSRM_Client = function(clientParams)
 		features.geometry.transform(Ushahidi.proj_4326, Ushahidi.proj_900913);
 		this.route_layer.addFeatures(features);
 		this.ushahidiMap._olMap.addLayer(this.route_layer);
-
+		this.ushahidiMap._olMap.setLayerIndex(this.route_layer, 99);
+		this.osrmRoute = response;
+		this.saveCurrentRouteToSession();
 	};
 	
 	this.getNearestPoint = function(viapoint)
@@ -399,4 +402,14 @@ OSRM_Client.OSRM_Client = function(clientParams)
 		document.head.appendChild(this._viarouteScript);
 	};
 	
+	this.saveCurrentRouteToSession = function()
+	{
+		var url = "osrmroute/set_route?route_json="+JSON.stringify(
+			this.osrmRoute
+		);
+		$.ajax({
+			url: url,
+			dataType : "json",
+		});
+	};
 };

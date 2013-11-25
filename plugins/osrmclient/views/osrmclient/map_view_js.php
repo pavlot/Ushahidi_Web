@@ -40,28 +40,34 @@ jQuery(function($) {
 			baseLayers: <?php echo map::layers_array(FALSE); ?>
 		};
 
-		var map = new Ushahidi.Map('divMap', mapConfig);
+		var ushahidiMap = new Ushahidi.Map('divMap', mapConfig);
 		
 		var markers = new OpenLayers.Layer.Markers( "Markers" );
-
 		window.osrmClient = new OSRM_Client.OSRM_Client(
 			{
-				ushahidiMap:map,
+				ushahidiMap:ushahidiMap,
 				mapMarkersLayer:markers,
 				pointsContainer:"viapoint-list",
 				site_root:"<?php echo url::file_loc("img") ?>"
 			}
 		);
 		
-		map._olMap.events.register("click", map._olMap , function(e){
-			osrmClient.addViapointAtXY(e.xy);
+		ushahidiMap._olMap.events.register("click", ushahidiMap._olMap , function(e){
+			if(!ushahidiMap._selectedFeature)
+			{
+				osrmClient.addViapointAtXY(e.xy);
+			}
 		});
 
-		map._olMap.addLayer(markers);
-		map.addLayer(Ushahidi.GEOJSON, {
-		name: "Reports",
-		url: "json/cluster",
-		transform: false
-		}, true, true);
+		ushahidiMap._olMap.addLayer(markers);
+		ushahidiMap.addLayer(Ushahidi.GEOJSON, 
+			{
+				name: "Reports",
+				url: "json/cluster",
+				transform: false
+			}, 
+			true, 
+			false
+		);
 });
 });
