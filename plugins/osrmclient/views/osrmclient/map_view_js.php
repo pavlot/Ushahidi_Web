@@ -58,5 +58,10 @@ jQuery(function($) {
 		});
 
 		map._olMap.addLayer(markers);
+		map.addLayer(Ushahidi.GEOJSON, {
+		name: "Reports",
+		url: "json/cluster",
+		transform: false
+		}, true, true);
 });
 });
